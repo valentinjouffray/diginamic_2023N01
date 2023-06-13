@@ -8,5 +8,5 @@ body  {
 }
 img, 
 span {
-  display: none;
+  display: inline
 }

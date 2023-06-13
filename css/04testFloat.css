@@ -1,0 +1,15 @@
+p {
+  width: 800px;
+  border: 1px solid red;
+}
+img,
+div {
+  float: left;
+  margin-right: 20px;
+  border: 1px solid black;
+}
+.clear-fix:after {
+  display: block;
+  clear: left;
+  content: "";
+}
