@@ -1,0 +1,12 @@
+* {
+  border: 10px solid black;
+}
+body  {
+  border: 5px solid red;
+  margin: 0;
+  padding: 0;
+}
+img, 
+span {
+  display: none;
+}

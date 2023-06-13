@@ -1,0 +1,12 @@
+tr:nth-child(2n + 4){
+  background-color: gray;
+}
+a {
+  color: white;
+}
+a:focus {
+  color: black;
+}
+a:before{
+  content: "lien : ";
+}

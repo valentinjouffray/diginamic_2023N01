@@ -1,0 +1,38 @@
+* {
+  color: brown;
+  border: 1px solid gray;
+}
+li {
+  font-size: 2rem;/* 16px * 2 */
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid black;
+}
+li {
+  color: red;
+}
+.li-2 {
+  color: green;
+}
+#my-item {
+  color: gray;
+}
+body > ul {
+  border: 5px solid black;
+  width: 50%;
+  margin: 0 auto;
+}
+.text1 {
+  border: 1px solid lightcoral;
+  border-radius: 3px;
+  padding: 50px 30px;
+  margin: 100px 50px;
+  display: block;
+}
+img {
+  border: 30px solid red;
+}
+/* Le $ indique ici que l'attribut doit se terminer par la valeur indiquée */
+img[src*="coopernet"] {
+  border: 10px solid orange;
+}
