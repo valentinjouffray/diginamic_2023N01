@@ -1,0 +1,13 @@
+figure {
+  width: 263px;
+  height: 82px;
+  overflow: hidden;
+}
+img {
+  transition: transform 1s ease;
+}
+img:hover {
+
+  transform: scale(1.2, 1.2);
+  /* transform: translate(100px, 100px); */
+}

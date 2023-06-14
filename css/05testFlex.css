@@ -1,0 +1,20 @@
+* {
+  border: 1px solid black;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap;
+  height: 80vh;
+  align-items: flex-start;
+  align-content: flex-start
+}
+.container > div {
+  /* flex-basis est à préfére à width parce qu'il est fait partie des propriétés flex (sur l'axe principal) */
+  flex-basis: 30%;
+}
+.flex {
+  display: flex;
+  flex-direction: column;
+}
