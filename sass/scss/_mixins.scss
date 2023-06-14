@@ -1,0 +1,12 @@
+@mixin button($bg:black, $fg:white) {
+  background-color: $bg;
+  color: $fg;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 5px 15px;
+  &:hover {
+    cursor: pointer;
+  }
+}

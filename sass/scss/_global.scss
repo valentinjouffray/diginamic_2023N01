@@ -1,0 +1,20 @@
+header {
+  nav {
+    background-color: aquamarine;
+    ul {
+      list-style: none;
+      display: flex;
+      li {
+        a {
+          @include button(white, $success);
+        }
+      }
+    }
+  }
+}
+
+footer {
+  a {
+    @include button($bg: lightgray);
+  }
+}
