@@ -1,0 +1,30 @@
+/* utilisation d'une mixin de bootstrap */
+@include media-breakpoint-up(md) {
+  article {
+    min-height: 425px;
+    background-image: url(../images/visuel_rvrnement.jpg);
+    background-size: 320px 425px;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    color: white;
+    .bottom-show {
+      background: linear-gradient(transparent, #000);
+      
+    }
+    a {
+      align-self: flex-start;
+      background-color: black;
+      color: white;
+      padding: 5px 10px;
+      text-decoration: none;
+      margin-top: 10px;
+      &:hover {
+        background-color: white;
+        color: black;
+      }
+    }
+  }
+}
