@@ -1,0 +1,4 @@
+section.task {
+  display: flex;
+  gap: 30px;
+}
