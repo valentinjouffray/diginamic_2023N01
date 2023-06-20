@@ -25,3 +25,17 @@ console.log(`liUsers`, liUsers);
 const usersWithE = users.filter((user) => user.includes("e"));
 console.log(`usersWithE`, usersWithE);
 
+
+const jc = {
+  nom: "Dusse",
+  prenom: "Jean-Claude",
+  sePresenter: function(){
+    console.log("Bonjour, je m'appelle " +
+    this.prenom + " " + this.nom);
+  }
+}
+for(let key in jc) {
+  console.log(key + " : " + jc[key]);
+}
+
+
