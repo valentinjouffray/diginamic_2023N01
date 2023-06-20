@@ -1,6 +1,7 @@
 import { createMarkup } from './../utils/utils.js';
 export class View {
-  constructor() {
+  constructor(controller) {
+    this.controller = controller;
     this.root = document.getElementById("root");
     this.domElements = this.render();
 
@@ -22,18 +23,34 @@ export class View {
       label: label,
       tasksSection: tasksSection,
       submit: submit,
-      todosElt: []
+      tasksElt: []
     }
   }
-  renderTodos(tasks){
+  renderTasks(tasks){
     // On fait le ménage
     this.domElements.tasksSection.innerHTML = "";
     // Création des tâches
     tasks.forEach(task => {
-      const taskElt = createMarkup("section", "", this.domElements["tasksSection"],[{class:"task"}]);
+      const taskElt = createMarkup("section", "", this.domElements["tasksSection"],[{class:"task"},{id: task.id}]);
       const taskLabel = createMarkup("h2", task.label, taskElt);
-      const taskDelete = createMarkup("button", "Supprimer", taskElt);
-      
+      const taskDelete = createMarkup("button", "Supprimer", taskElt,[{"class": "button-delete"}]);
+      this.domElements.tasksElt.push(taskElt);
     })
+  }
+  /**
+   * 
+   * @param {Function} handler // se situe dans le controller
+   */
+  bindTask(handler) {
+    this.domElements.tasksElt.forEach(task => {
+      task.onclick = (event) => {
+        console.log(`event.target class`, event.target.getAttribute("class"));
+        if(event.target.getAttribute("class") == "button-delete") {
+          handler("delete", task.id);
+        }
+       
+      };
+    })
+    
   }
 }
