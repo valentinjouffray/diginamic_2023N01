@@ -32,8 +32,11 @@ export class View {
     // Création des tâches
     tasks.forEach(task => {
       const taskElt = createMarkup("section", "", this.domElements["tasksSection"],[{class:"task"},{id: task.id}]);
-      const taskLabel = createMarkup("h2", task.label, taskElt);
+      const taskLabel = createMarkup("h2", task.label, taskElt,[{"class": "h2-task"}]);
+
       const taskDelete = createMarkup("button", "Supprimer", taskElt,[{"class": "button-delete"}]);
+
+      const taskValidate = createMarkup("button", "Valider", taskElt,[{"class": "button-validate"}]);
       this.domElements.tasksElt.push(taskElt);
     })
   }
@@ -47,6 +50,9 @@ export class View {
         console.log(`event.target class`, event.target.getAttribute("class"));
         if(event.target.getAttribute("class") == "button-delete") {
           handler("delete", task.id);
+        }
+        if(event.target.getAttribute("class") == "button-validate") {
+          handler("validate", task.id);
         }
        
       };
