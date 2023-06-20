@@ -12,7 +12,6 @@ export function createMarkup(markupname, text, parent, attributes = []) {
   markup.textContent = text;
   parent.appendChild(markup);
   for (const attribute of attributes) {
-    console.log("validé");
     for (let key in attribute) {
       markup.setAttribute(key, attribute[key]);
     }
