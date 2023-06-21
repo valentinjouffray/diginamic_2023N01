@@ -2,6 +2,7 @@ export class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
+
     // Gestion des événements le formulaire via un callback
     this.view.bindForm(this.handleSubmitFormAdd);
 
@@ -15,7 +16,6 @@ export class Controller {
   }
   handleTaskEvent = (action, taskId) => {
     console.log(`Dans handleTask`, action, taskId);
-    console.log(`this`, this);
     switch (action) {
       case "delete":
         this.model.deleteTask(taskId);
@@ -36,16 +36,17 @@ export class Controller {
     }
     // il suffit de traiter les données en fonction de l'action et de l'id de la tâche
   }
-  handleSubmitFormAdd(task) {
+  handleSubmitFormAdd = (task) => {
     console.log(`Dans handleSubmitFormAdd`, task);
 
     // Communication avec le modèle (ajout d'une tâche)
-
+    console.log(`this`,this);
+    this.model.addTask(task);
     // On recharche la vue
-    this.model.validateTask(taskId);
     this.view.resetTasksElt();
     this.view.renderTasks(this.model.tasks);
-
+    // On gère les événements sur les tâches
+    this.view.bindTask(this.handleTaskEvent);
   }
 
 }
