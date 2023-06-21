@@ -1,19 +1,17 @@
 import { createMarkup } from './../utils/utils.js';
 export class View {
-  constructor(controller) {
-    this.controller = controller;
+  constructor() {
     this.root = document.getElementById("root");
     this.domElements = this.render();
-
   }
   /**
    * Crée les premiers éléments de l'interface
    * @returns Object DOMElements
    */
   render() {
-    const form = createMarkup("form", "", this.root);
-    const label = createMarkup("label", "Tâche", form);
-    const input = createMarkup("input", "", form, [{ type: "text" }]);
+    const form = createMarkup("form", "", this.root, [{ "class": "my-2 d-flex justify-content-start gap-3 border-bottom pb-3 " }]);
+    const label = createMarkup("label", "Tâche : ", form, [{ "class": "form-label" }]);
+    const input = createMarkup("input", "", form, [{ type: "text" }, { class: "" }, { id: "input-label" }]);
     const submit = createMarkup("input", "", form, [{ type: "submit" }, { value: "Envoyer" }]);
     const tasksSection = createMarkup("section", "", this.root, [{ id: "tasks" }]);
     return {
@@ -26,17 +24,18 @@ export class View {
       tasksElt: []
     }
   }
-  renderTasks(tasks){
+  renderTasks(tasks) {
     // On fait le ménage
     this.domElements.tasksSection.innerHTML = "";
     // Création des tâches
     tasks.forEach(task => {
-      const taskElt = createMarkup("section", "", this.domElements["tasksSection"],[{class:"task"},{id: task.id}]);
-      const taskLabel = createMarkup("h2", task.label, taskElt,[{"class": "h2-task"}]);
+      const validate = task.done ? " text-decoration-line-through" : "";
+      const taskElt = createMarkup("section", "", this.domElements["tasksSection"], [{ class: "task my-3" }, { id: task.id }]);
+      const taskLabel = createMarkup("h2", task.label, taskElt, [{ "class": "h2-task" + validate }]);
 
-      const taskDelete = createMarkup("button", "Supprimer", taskElt,[{"class": "button-delete"}]);
+      const taskDelete = createMarkup("button", "Supprimer", taskElt, [{ "class": "btn btn-danger" }, { "data-action": "delete" }]);
 
-      const taskValidate = createMarkup("button", "Valider", taskElt,[{"class": "button-validate"}]);
+      const taskValidate = createMarkup("button", "Valider", taskElt, [{ "class": "btn btn-success" }, { "data-action": "validate" }]);
       this.domElements.tasksElt.push(taskElt);
     })
   }
@@ -47,16 +46,37 @@ export class View {
   bindTask(handler) {
     this.domElements.tasksElt.forEach(task => {
       task.onclick = (event) => {
-        console.log(`event.target class`, event.target.getAttribute("class"));
-        if(event.target.getAttribute("class") == "button-delete") {
-          handler("delete", task.id);
+        switch (event.target.getAttribute("data-action")) {
+          case "delete":
+            handler("delete", task.id);
+            break;
+          case "validate":
+            handler("validate", task.id);
+            break;
+          default:
+            break;
         }
-        if(event.target.getAttribute("class") == "button-validate") {
-          handler("validate", task.id);
-        }
-       
+
       };
     })
-    
+
+  }
+  bindForm(handler) {
+    // Gestion du sumbit sur le formulaire
+    this.domElements.form.onsubmit = (event) => {
+      event.preventDefault();
+      const label = document.getElementById("input-label").value;
+      if(label) {
+        const newTask = {
+          id: parseInt(Math.random() * 1_000_000),
+          label: label,
+          done: false
+        };
+        handler(newTask);
+      }
+    }
+  }
+  resetTasksElt() {
+    this.domElements.tasksElt = [];
   }
 }
