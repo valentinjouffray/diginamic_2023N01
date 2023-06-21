@@ -48,5 +48,4 @@ export class Controller {
     // On gère les événements sur les tâches
     this.view.bindTask(this.handleTaskEvent);
   }
-
 }
