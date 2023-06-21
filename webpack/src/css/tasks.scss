@@ -1,0 +1,11 @@
+section.task {
+  display: flex;
+  gap: 30px;
+}
+.task:hover {
+  background-color: #EEEEEE;
+}
+.h2-task {
+  width: 50%;
+  padding: 10px;
+}
