@@ -12,6 +12,9 @@ export class Model {
     this.tasks.splice(taskIndex, 1);
     
   }
+  addTask(task) {
+    this.tasks.push(task);
+  }
   validateTask(taskId) {
     const taskIndex = this.tasks.findIndex(task => {
       return task.id == taskId;
