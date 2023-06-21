@@ -24,15 +24,20 @@ export class Controller {
     }
 
   }
-  handleTaskEvent = (action, taskId) => {
+  handleTaskEvent = async (action, taskId) => {
     console.log(`Dans handleTask`, action, taskId);
     switch (action) {
       case "delete":
-        this.model.deleteTask(taskId);
+        this.model.deleteLocalTask(taskId);
         this.view.resetTasksElt();
         this.view.renderTasks(this.model.tasks);
         // Gestion des événements via un callback
         this.view.bindTask(this.handleTaskEvent);
+        try {
+          await this.model.deleteRemoteTask(taskId);
+        } catch (error) {
+          console.error(`Erreur attrapée lors de la suppression de la tâche sur le serveur`, error);
+        }
         break;
       case "validate":
         this.model.validateTask(taskId);
@@ -50,9 +55,7 @@ export class Controller {
     console.log(`Dans handleSubmitFormAdd`, task);
 
     // Communication avec le modèle (ajout d'une tâche)
-   
     await this.model.addTask(task);
-    console.log(`dans handleSubmitFormAdd`);
     // On va chercher les nouvelles tasks
     await this.model.getTasks();
     // On recharche la vue

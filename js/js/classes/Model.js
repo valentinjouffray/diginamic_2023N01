@@ -13,12 +13,26 @@ export class Model {
         this.tasks = tasks;
       })
   }
-  deleteTask(taskId) {
+  deleteLocalTask(taskId) {
     const taskIndex = this.tasks.findIndex(task => {
       return task.id == taskId;
     });
     this.tasks.splice(taskIndex, 1);
-
+  }
+  async deleteRemoteTask(taskId) {
+    // on supprime sur le serveur
+    return fetch(`http://localhost:3000/tasks/${taskId}`,
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "DELETE"
+      })
+      .then((response) => { 
+        return response.json();
+       })
+      .then(function (data) { console.log("data après suppression : ", data) });
   }
   addTask(task) {
     //this.tasks.push(task);
@@ -32,7 +46,7 @@ export class Model {
         body: JSON.stringify(task)
       })
       .then(function (res) { console.log("Tout s'est bien passé", res) })
-      .catch(function (res) { console.error("Erreur attrapée",res) })
+      .catch(function (res) { console.error("Erreur attrapée", res) })
   }
   validateTask(taskId) {
     const taskIndex = this.tasks.findIndex(task => {
