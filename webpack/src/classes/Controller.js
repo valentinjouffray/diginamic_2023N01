@@ -7,12 +7,12 @@ export class Controller {
     this.view.bindForm(this.handleSubmitFormAdd);
 
     // Récupération asynchrone des tâches
-    this.getTasks();
+    this.refreshTasksView();
   }
-  async getTasks() {
+  async refreshTasksView() {
     try {
       // Récupération des tâches
-      await this.model.getTasks();
+      const tasks = await this.model.loadTasks();
 
       // Première visualisation de la liste
       this.view.renderTasks(this.model.tasks);
@@ -22,7 +22,6 @@ export class Controller {
     } catch (error) {
       console.error(`Erreur attrapée : `, error);
     }
-
   }
   handleTaskEvent = async (action, taskId) => {
     console.log(`Dans handleTask`, action, taskId);
@@ -36,7 +35,10 @@ export class Controller {
         try {
           await this.model.deleteRemoteTask(taskId);
         } catch (error) {
-          console.error(`Erreur attrapée lors de la suppression de la tâche sur le serveur`, error);
+          console.error(
+            `Erreur attrapée lors de la suppression de la tâche sur le serveur`,
+            error
+          );
         }
         break;
       case "validate":
@@ -48,14 +50,17 @@ export class Controller {
         try {
           await this.model.validateRemoteTask(taskId);
         } catch (error) {
-          console.error(`Erreur attrapée lors de la modification de la tâche sur le serveur`, error);
+          console.error(
+            `Erreur attrapée lors de la modification de la tâche sur le serveur`,
+            error
+          );
         }
         break;
       default:
         break;
     }
     // il suffit de traiter les données en fonction de l'action et de l'id de la tâche
-  }
+  };
   handleSubmitFormAdd = async (task) => {
     console.log(`Dans handleSubmitFormAdd`, task);
 
@@ -68,5 +73,5 @@ export class Controller {
     this.view.renderTasks(this.model.tasks);
     // On gère les événements sur les tâches
     this.view.bindTask(this.handleTaskEvent);
-  }
+  };
 }
