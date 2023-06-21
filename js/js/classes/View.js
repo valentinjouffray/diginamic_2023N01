@@ -28,14 +28,18 @@ export class View {
     // On fait le ménage
     this.domElements.tasksSection.innerHTML = "";
     // Création des tâches
-    tasks.forEach(task => {
-      const validate = task.done ? " text-decoration-line-through" : "";
+    tasks.sort((a,b)=>{
+      return a.done - b.done;
+    }).forEach(task => {
+      const validateCssClass = task.done ? " text-decoration-line-through" : "";
+      const validateLabelButton = task.done ? "Invalider" : "Valider";
+
       const taskElt = createMarkup("section", "", this.domElements["tasksSection"], [{ class: "task my-3" }, { id: task.id }]);
-      const taskLabel = createMarkup("h2", task.label, taskElt, [{ "class": "h2-task" + validate }]);
+      const taskLabel = createMarkup("h2", task.label, taskElt, [{ "class": "h2-task" + validateCssClass }]);
 
       const taskDelete = createMarkup("button", "Supprimer", taskElt, [{ "class": "btn btn-danger" }, { "data-action": "delete" }]);
 
-      const taskValidate = createMarkup("button", "Valider", taskElt, [{ "class": "btn btn-success" }, { "data-action": "validate" }]);
+      const taskValidate = createMarkup("button", validateLabelButton, taskElt, [{ "class": "btn btn-success" }, { "data-action": "validate" }]);
       this.domElements.tasksElt.push(taskElt);
     })
   }
@@ -48,7 +52,9 @@ export class View {
       task.onclick = (event) => {
         switch (event.target.getAttribute("data-action")) {
           case "delete":
-            handler("delete", task.id);
+            if (window.confirm("Voulez-vous supprimer cette tâche ?")) {
+              handler("delete", task.id);
+            }
             break;
           case "validate":
             handler("validate", task.id);
@@ -66,6 +72,7 @@ export class View {
     this.domElements.form.onsubmit = (event) => {
       event.preventDefault();
       const label = document.getElementById("input-label").value;
+      document.getElementById("input-label").value = "";
       if(label) {
         const newTask = {
           id: parseInt(Math.random() * 1_000_000),

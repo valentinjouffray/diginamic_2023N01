@@ -29,9 +29,9 @@ export class Model {
         },
         method: "DELETE"
       })
-      .then((response) => { 
+      .then((response) => {
         return response.json();
-       })
+      })
       .then(function (data) { console.log("data après suppression : ", data) });
   }
   addTask(task) {
@@ -48,11 +48,30 @@ export class Model {
       .then(function (res) { console.log("Tout s'est bien passé", res) })
       .catch(function (res) { console.error("Erreur attrapée", res) })
   }
-  validateTask(taskId) {
+  validateLocalTask(taskId) {
     const taskIndex = this.tasks.findIndex(task => {
       return task.id == taskId;
     });
     console.log(`Dans  validateTask - taskIndex - taskId - this  : `, taskIndex, taskId, this);
     this.tasks[taskIndex].done = !this.tasks[taskIndex].done;
+  }
+  async validateRemoteTask(taskId) {
+    const taskIndex = this.tasks.findIndex(task => {
+      return task.id == taskId;
+    });
+    // on modifie sur le serveur
+    return fetch(`http://localhost:3000/tasks/${taskId}`,
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "PUT",
+        body: JSON.stringify(this.tasks[taskIndex])
+      })
+      .then((response) => {
+        return response.json();
+      })
+      .then(function (data) { console.log("data après modification : ", data) });
   }
 }
