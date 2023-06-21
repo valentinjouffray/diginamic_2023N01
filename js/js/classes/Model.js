@@ -31,10 +31,8 @@ export class Model {
         method: "POST",
         body: JSON.stringify(task)
       })
-      .then(function (res) { console.log(res) })
-      .catch(function (res) { console.log(res) })
-
-
+      .then(function (res) { console.log("Tout s'est bien passé", res) })
+      .catch(function (res) { console.error("Erreur attrapée",res) })
   }
   validateTask(taskId) {
     const taskIndex = this.tasks.findIndex(task => {

@@ -50,12 +50,15 @@ export class Controller {
     console.log(`Dans handleSubmitFormAdd`, task);
 
     // Communication avec le modèle (ajout d'une tâche)
-    console.log(`this`, this);
+   
     await this.model.addTask(task);
+    console.log(`dans handleSubmitFormAdd`);
+    // On va chercher les nouvelles tasks
+    await this.model.getTasks();
     // On recharche la vue
-    /* this.view.resetTasksElt();
+    this.view.resetTasksElt();
     this.view.renderTasks(this.model.tasks);
     // On gère les événements sur les tâches
-    this.view.bindTask(this.handleTaskEvent); */
+    this.view.bindTask(this.handleTaskEvent);
   }
 }
