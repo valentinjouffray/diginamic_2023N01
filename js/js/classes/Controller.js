@@ -6,12 +6,22 @@ export class Controller {
     // Gestion des événements le formulaire via un callback
     this.view.bindForm(this.handleSubmitFormAdd);
 
-    // Première visualisation de la liste
-    this.view.renderTasks(this.model.tasks);
+    // Récupération asynchrone des tâches
+    this.getTasks();
+  }
+  async getTasks() {
+    try {
+      // Récupération des tâches
+      await this.model.getTasks();
 
-    // Gestion des événements sur une tâche via un callback
-    this.view.bindTask(this.handleTaskEvent);
+      // Première visualisation de la liste
+      this.view.renderTasks(this.model.tasks);
 
+      // Gestion des événements sur une tâche via un callback
+      this.view.bindTask(this.handleTaskEvent);
+    } catch (error) {
+      console.error(`Erreur attrapée : `, error);
+    }
 
   }
   handleTaskEvent = (action, taskId) => {
@@ -40,7 +50,7 @@ export class Controller {
     console.log(`Dans handleSubmitFormAdd`, task);
 
     // Communication avec le modèle (ajout d'une tâche)
-    console.log(`this`,this);
+    console.log(`this`, this);
     this.model.addTask(task);
     // On recharche la vue
     this.view.resetTasksElt();
