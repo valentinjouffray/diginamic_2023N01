@@ -11,7 +11,7 @@ export class View {
   render() {
     const form = createMarkup("form", "", this.root, [{ "class": "my-2 d-flex justify-content-start gap-3 border-bottom pb-3 " }]);
     const label = createMarkup("label", "Tâche : ", form, [{ "class": "form-label" }]);
-    const input = createMarkup("input", "", form, [{ type: "text" }, { class: "" }]);
+    const input = createMarkup("input", "", form, [{ type: "text" }, { class: "" }, { id: "input-label" }]);
     const submit = createMarkup("input", "", form, [{ type: "submit" }, { value: "Envoyer" }]);
     const tasksSection = createMarkup("section", "", this.root, [{ id: "tasks" }]);
     return {
@@ -60,6 +60,21 @@ export class View {
       };
     })
 
+  }
+  bindForm(handler) {
+    // Gestion du sumbit sur le formulaire
+    this.domElements.form.onsubmit = (event) => {
+      event.preventDefault();
+      const label = document.getElementById("input-label").value;
+      if(label) {
+        const newTask = {
+          id: parseInt(Math.random() * 1_000_000),
+          label: label,
+          done: false
+        };
+        handler(newTask);
+      }
+    }
   }
   resetTasksElt() {
     this.domElements.tasksElt = [];
