@@ -4,7 +4,7 @@ export class Model {
     this.getTasks();
   }
   getTasks() {
-    fetch("http://localhost:3000/tasks")
+    return fetch("http://localhost:3000/tasks")
       .then(response => {
         console.log(`statut de la reponse`, response.status);
         return response.json();
@@ -12,19 +12,41 @@ export class Model {
       .then(tasks => {
         this.tasks = tasks;
       })
-      .catch(error => {
-        console.error(`Erreur attrapée : `, error);
-      })
   }
-  deleteTask(taskId) {
+  deleteLocalTask(taskId) {
     const taskIndex = this.tasks.findIndex(task => {
       return task.id == taskId;
     });
     this.tasks.splice(taskIndex, 1);
-
+  }
+  async deleteRemoteTask(taskId) {
+    // on supprime sur le serveur
+    return fetch(`http://localhost:3000/tasks/${taskId}`,
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "DELETE"
+      })
+      .then((response) => { 
+        return response.json();
+       })
+      .then(function (data) { console.log("data après suppression : ", data) });
   }
   addTask(task) {
-    this.tasks.push(task);
+    //this.tasks.push(task);
+    return fetch("http://localhost:3000/tasks",
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify(task)
+      })
+      .then(function (res) { console.log("Tout s'est bien passé", res) })
+      .catch(function (res) { console.error("Erreur attrapée", res) })
   }
   validateTask(taskId) {
     const taskIndex = this.tasks.findIndex(task => {

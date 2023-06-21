@@ -6,23 +6,38 @@ export class Controller {
     // Gestion des événements le formulaire via un callback
     this.view.bindForm(this.handleSubmitFormAdd);
 
-    // Première visualisation de la liste
-    this.view.renderTasks(this.model.tasks);
+    // Récupération asynchrone des tâches
+    this.getTasks();
+  }
+  async getTasks() {
+    try {
+      // Récupération des tâches
+      await this.model.getTasks();
 
-    // Gestion des événements sur une tâche via un callback
-    this.view.bindTask(this.handleTaskEvent);
+      // Première visualisation de la liste
+      this.view.renderTasks(this.model.tasks);
 
+      // Gestion des événements sur une tâche via un callback
+      this.view.bindTask(this.handleTaskEvent);
+    } catch (error) {
+      console.error(`Erreur attrapée : `, error);
+    }
 
   }
-  handleTaskEvent = (action, taskId) => {
+  handleTaskEvent = async (action, taskId) => {
     console.log(`Dans handleTask`, action, taskId);
     switch (action) {
       case "delete":
-        this.model.deleteTask(taskId);
+        this.model.deleteLocalTask(taskId);
         this.view.resetTasksElt();
         this.view.renderTasks(this.model.tasks);
         // Gestion des événements via un callback
         this.view.bindTask(this.handleTaskEvent);
+        try {
+          await this.model.deleteRemoteTask(taskId);
+        } catch (error) {
+          console.error(`Erreur attrapée lors de la suppression de la tâche sur le serveur`, error);
+        }
         break;
       case "validate":
         this.model.validateTask(taskId);
@@ -36,12 +51,13 @@ export class Controller {
     }
     // il suffit de traiter les données en fonction de l'action et de l'id de la tâche
   }
-  handleSubmitFormAdd = (task) => {
+  handleSubmitFormAdd = async (task) => {
     console.log(`Dans handleSubmitFormAdd`, task);
 
     // Communication avec le modèle (ajout d'une tâche)
-    console.log(`this`,this);
-    this.model.addTask(task);
+    await this.model.addTask(task);
+    // On va chercher les nouvelles tasks
+    await this.model.getTasks();
     // On recharche la vue
     this.view.resetTasksElt();
     this.view.renderTasks(this.model.tasks);
