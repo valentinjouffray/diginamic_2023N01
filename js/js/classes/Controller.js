@@ -46,16 +46,16 @@ export class Controller {
     }
     // il suffit de traiter les données en fonction de l'action et de l'id de la tâche
   }
-  handleSubmitFormAdd = (task) => {
+  handleSubmitFormAdd = async (task) => {
     console.log(`Dans handleSubmitFormAdd`, task);
 
     // Communication avec le modèle (ajout d'une tâche)
     console.log(`this`, this);
-    this.model.addTask(task);
+    await this.model.addTask(task);
     // On recharche la vue
-    this.view.resetTasksElt();
+    /* this.view.resetTasksElt();
     this.view.renderTasks(this.model.tasks);
     // On gère les événements sur les tâches
-    this.view.bindTask(this.handleTaskEvent);
+    this.view.bindTask(this.handleTaskEvent); */
   }
 }

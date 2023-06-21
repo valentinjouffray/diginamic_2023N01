@@ -21,7 +21,20 @@ export class Model {
 
   }
   addTask(task) {
-    this.tasks.push(task);
+    //this.tasks.push(task);
+    return fetch("http://localhost:3000/tasks",
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify(task)
+      })
+      .then(function (res) { console.log(res) })
+      .catch(function (res) { console.log(res) })
+
+
   }
   validateTask(taskId) {
     const taskIndex = this.tasks.findIndex(task => {
