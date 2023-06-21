@@ -5,6 +5,9 @@ export class Model {
       {id: 20, label: "Faire les courses", done: false},
     ]
   }
+  getTasks() {
+    
+  }
   deleteTask(taskId) {
     const taskIndex = this.tasks.findIndex(task => {
       return task.id == taskId;
