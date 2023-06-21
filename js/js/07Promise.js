@@ -19,7 +19,7 @@ function getUser(token) {
     setTimeout(() => {
       if (Math.random() > 0.1) {
         // Cas favorable
-        resolve([{ name: "Dupond", uid: 158 }, token]);
+        resolve({ name: "Dupond", uid: 158 });
       } else {
         // cas défavorable
         reject(new Error("Pb de récupération de l'utilisateur"));
@@ -29,7 +29,7 @@ function getUser(token) {
 }
 
 
-getToken()
+/* getToken()
   .then((token) => {
     console.log(`token`, token);
     return getUser(token);
@@ -40,5 +40,16 @@ getToken()
   })
   .catch(error => {
     console.error(`Erreur attrapée`, error);
-  });
+  }); */
+
+  async function getTokenAndUser () {
+    try {
+      const token = await getToken();
+      const user = await getUser(token);
+      console.log(`token - user`, token, user);
+    } catch (error) {
+      console.error(`Erreur attrapée : `, error);
+    }
+  }
+  getTokenAndUser();
 
