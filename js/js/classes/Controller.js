@@ -40,11 +40,16 @@ export class Controller {
         }
         break;
       case "validate":
-        this.model.validateTask(taskId);
+        this.model.validateLocalTask(taskId);
         this.view.resetTasksElt();
         this.view.renderTasks(this.model.tasks);
         // Gestion des événements via un callback
         this.view.bindTask(this.handleTaskEvent);
+        try {
+          await this.model.validateRemoteTask(taskId);
+        } catch (error) {
+          console.error(`Erreur attrapée lors de la modification de la tâche sur le serveur`, error);
+        }
         break;
       default:
         break;
