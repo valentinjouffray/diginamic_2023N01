@@ -67,7 +67,7 @@ export class Controller {
     // Communication avec le modèle (ajout d'une tâche)
     await this.model.addTask(task);
     // On va chercher les nouvelles tasks
-    await this.model.getTasks();
+    await this.model.loadTasks();
     // On recharche la vue
     this.view.resetTasksElt();
     this.view.renderTasks(this.model.tasks);
