@@ -1,13 +1,12 @@
 import { Task } from "../interfaces/Task";
-export interface Model {
-  tasks:[]|[Task];
-}
-export class Model implements Model {
+
+export class Model {
+  tasks: Task[];
   constructor() {
     this.tasks = [];
-    this.getTasks();
+    this.loadTasks();
   }
-  getTasks() {
+  loadTasks(): Promise<void> {
     return fetch("http://localhost:3000/tasks")
       .then(response => {
         console.log(`statut de la reponse`, response.status);
